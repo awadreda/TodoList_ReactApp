@@ -1,0 +1,132 @@
+#root {
+  max-width: 1280px;
+  margin: 0 auto;
+  /* padding: 2rem; */
+  text-align: center;
+}
+/* CouTom FoNTs */
+
+@font-face {
+  font-family: ALex;
+  src: url("/public/Fonts/Alexandria-Black.ttf");
+  font-weight: 900;
+}
+
+@font-face {
+  font-family: ALex;
+  src: url("/TodoList/public/Fonts/Alexandria-Thin.ttf");
+  font-weight: 50;
+}
+
+@font-face {
+  font-family: ALex;
+  src: url("/TodoList/public/Fonts/Alexandria-Bold.ttf");
+  font-weight: bold;
+}
+
+@font-face {
+  font-family: ALex;
+  src: url("/TodoList/public/Fonts/Alexandria-ExtraBold.ttf");
+  font-weight: bolder;
+}
+
+@font-face {
+  font-family: ALex;
+  src: url("/TodoList/public/Fonts/Alexandria-Regular.ttf");
+  font-weight: normal;
+}
+
+@font-face {
+  font-family: ALex;
+  src: url("/TodoList/public/Fonts/Alexandria-Medium.ttf");
+  font-weight: 500;
+}
+
+
+/* CouTom FoNTs */
+
+
+/* custom scorll bar  */
+
+ .TodosContainer::-webkit-scrollbar {
+      width: 5px;
+    }
+
+    
+
+
+    .TodosContainer::-webkit-scrollbar-track {
+      background: white;
+    }
+
+   .TodosContainer ::-webkit-scrollbar-thumb {
+      background-color: #b1b7d5;
+      border-radius: 6px;
+      
+      border: 3px solid white;
+    }
+
+   .TodosContainer ::-webkit-scrollbar-button {
+      display: none;
+    }
+
+    * {
+      
+      scrollbar-width: thin;
+      scrollbar-color: #021998 white;
+    }
+
+/* custom scorll bar  */
+
+.logo {
+  height: 6em;
+  padding: 1.5em;
+  will-change: filter;
+  transition: filter 300ms;
+}
+.logo:hover {
+  filter: drop-shadow(0 0 2em #646cffaa);
+}
+.logo.react:hover {
+  filter: drop-shadow(0 0 2em #61dafbaa);
+}
+
+@keyframes logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  a:nth-of-type(2) .logo {
+    animation: logo-spin infinite 20s linear;
+  }
+}
+
+.card {
+  padding: 2em;
+}
+
+.read-the-docs {
+  color: #888;
+}
+
+
+
+/* Hovering */
+
+.hoverCard{
+
+  /* text-decoration: line-through; */
+  &:hover {
+
+    padding-top: 20px;
+    padding-bottom: 20px;
+    
+  }
+}
+
+/* Hovering */
