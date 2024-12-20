@@ -11,7 +11,7 @@ import '../App.css'
 import Grid from "@mui/material/Grid2";
 import { v4 as uuidv4 } from "uuid";
 import Todo from "./Todo";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useMemo, useState } from "react";
 import { TodosContext } from "../Contexts/TodosContexts";
 import { todoObj } from "../Types/types";
 
@@ -29,12 +29,24 @@ export default function TodoList() {
   }
 
 
-  const compeletdTodos = value.todos.filter((t) => t.isCompleted)
+  const compeletdTodos = useMemo(() => {
+  return   value.todos.filter((t) => {
+      console.log("calling CompletedTodos");
+      return t.isCompleted;
+    });
+  },[value.todos]);
 
 
-  const nonCompeletdTodos = value.todos.filter((t) => !t.isCompleted)
+  const nonCompeletdTodos = useMemo(() => {
+    return value.todos.filter((t) => {
+      console.log("calling NOt CompletedTodos");
+      return !t.isCompleted;
+    });
+  }, [value.todos]);
 
 
+
+    
 let tsxTodo = value.todos;
 
 if(todosToSHwo==="Completed")
