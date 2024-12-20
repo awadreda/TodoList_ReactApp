@@ -75,7 +75,7 @@ return (
     sx={{
       fontFamily: "Alexandria, sans-serif",
 
-      maxWidth: 450,
+      maxWidth: 400,
       boxShadow:
         "0 4px 10px rgba(255, 255, 255, 0.3), 0 4px 20px rgba(0, 0, 0, 0.8)",
       backgroundColor: "white", // Ensures the container is white to contrast with the shadow
@@ -83,15 +83,15 @@ return (
       padding: "20px", // Adds spacing inside the container
     }}
   >
-    <Card sx={{ minWidth: 275, direction: "rtl" }}>
+    <Card sx={{ minWidth: 275 , direction: "rtl" }}>
       <CardContent>
         <Typography
-          variant="h2"
+          variant="h3"
           sx={{
             position: "relative",
             zIndex: "9",
             fontWeight: "bolder",
-            fontSize: "60px",
+            fontSize: "40px",
             fontFamily: "Alexandria, sans-serif",
           }}
           component="div"
@@ -161,7 +161,7 @@ return (
             style={{
               backgroundColor: "white",
               padding: "12px",
-              width: "93%",
+              width: "90%",
               outline: "none",
               color: "black",
               fontSize: "20px",
@@ -175,7 +175,8 @@ return (
             sx={{
               backgroundColor: "#021998",
               color: "white",
-              padding: "10px 25px",
+              padding: "15px 10px",
+              fontSize:"15px"
             }}
             size="large"
             onClick={() => {

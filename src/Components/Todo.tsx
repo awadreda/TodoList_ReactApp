@@ -87,179 +87,179 @@ export default function Todo(todo: TodoPorps) {
 
 return (
   <>
-    <Card
-      sx={{
-        minWidth: 275,
-        direction: "rtl",
-        backgroundColor: "#021998",
-        color: "white",
-        transition: ".2s",
-        margin: "15px 10px",
+<Card
+sx={{
+minWidth: 275,
+direction: "rtl",
+backgroundColor: "#021998",
+color: "white",
+transition: ".2s",
+margin: "15px 10px",
+}}
+>
+<CardContent>
+<Grid
+container
+className="hoverCard"
+sx={{ transition: ".2s" }}
+spacing={2}
+>
+<Grid sx={{ textAlign: "right" }} size={8}>
+<Typography
+  variant="h3"
+  sx={{
+    fontWeight: "bold",
+    fontSize: "25px",
+    marginBottom: "5px",
+    textDecoration: todo.isCompleted ?  "line-through" : "none"  ,
+  }}
+>
+  {todo.title}
+</Typography>
+<Typography>{todo.deteles}</Typography>
+</Grid>
+
+<Grid size={4}>
+{/* Check Button */}
+<IconButton
+  onClick={() => handleCheckedClick(todo.id)}
+  aria-label="Checked"
+>
+  <CheckIcon
+    sx={{
+      color: todo.isCompleted ? "white" : "#70fb70",
+      backgroundColor: todo.isCompleted ? "#70fb70" : "white",
+      padding: "1px",
+      borderRadius: "50%",
+      border: "1px solid #70fb70",
+      transition: "all 0.3s ease",
+      "&:hover": {
+        color: todo.isCompleted ? "#70fb70" : "white",
+        backgroundColor: todo.isCompleted ? "white" : "#70fb70",
+      },
+    }}
+  />
+</IconButton>
+
+{/* Edit Button */}
+<IconButton
+  onClick={() => {
+    setShowUpdateDialog(true);
+  }}
+  aria-label="Edit"
+>
+  <EditIcon
+    sx={{
+      color: "white",
+      borderRadius: "50%",
+      border: "1px solid white",
+      padding: "1px",
+
+      transition: "all 0.3s ease",
+      "&:hover": {
+        color: "#70fb70",
+        backgroundColor: "white",
+      },
+    }}
+  />
+</IconButton>
+
+{/* Update Confirmation Dialog */}
+<Dialog
+  open={showUpdateDialog}
+  onClose={() => setShowUpdateDialog(false)}
+>
+  <DialogTitle variant="h3">Uptate The Task</DialogTitle>
+  <DialogContent>
+    <div
+      id="inputsContainer"
+      style={{
+        display: "flex",
+        flexDirection: "column",
       }}
     >
-      <CardContent>
-        <Grid
-          container
-          className="hoverCard"
-          sx={{ transition: ".2s" }}
-          spacing={2}
-        >
-          <Grid sx={{ textAlign: "right" }} size={8}>
-            <Typography
-              variant="h3"
-              sx={{
-                fontWeight: "bold",
-                fontSize: "30px",
-                marginBottom: "5px",
-                textDecoration: todo.isCompleted ?  "line-through" : "none"  ,
-              }}
-            >
-              {todo.title}
-            </Typography>
-            <Typography>{todo.deteles}</Typography>
-          </Grid>
+      <input
+        id="EditTitle"
+        type="text"
+        style={{
+          backgroundColor: "white",
+          color: "black",
+          fontSize: "25px",
+          fontWeight: "bold",
+          outline: "none",
+          border: "none",
+          borderBottom: "2px solid  black",
+          margin: "15px 15px",
+        }}
+        value={todoContent.title}
+        onChange={(e: React.FormEvent<HTMLInputElement>) => {
+          const newTitle = (e.target as HTMLInputElement).value;
 
-          <Grid size={4}>
-            {/* Check Button */}
-            <IconButton
-              onClick={() => handleCheckedClick(todo.id)}
-              aria-label="Checked"
-            >
-              <CheckIcon
-                sx={{
-                  color: todo.isCompleted ? "white" : "#70fb70",
-                  backgroundColor: todo.isCompleted ? "#70fb70" : "white",
-                  padding: "4px",
-                  borderRadius: "50%",
-                  border: "1px solid #70fb70",
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    color: todo.isCompleted ? "#70fb70" : "white",
-                    backgroundColor: todo.isCompleted ? "white" : "#70fb70",
-                  },
-                }}
-              />
-            </IconButton>
+          setTodoContent({ ...todoContent, title: newTitle });
+        }}
+      />
 
-            {/* Edit Button */}
-            <IconButton
-              onClick={() => {
-                setShowUpdateDialog(true);
-              }}
-              aria-label="Edit"
-            >
-              <EditIcon
-                sx={{
-                  color: "white",
-                  borderRadius: "50%",
-                  border: "1px solid white",
-                  padding: "4px",
+      <input
+        id="EditDetails"
+        type="text"
+        style={{
+          backgroundColor: "white",
+          color: "black",
+          fontSize: "25px",
+          fontWeight: "bold",
+          outline: "none",
+          border: "none",
+          borderBottom: "2px solid  black",
+          margin: "15px 15px",
+        }}
+        value={todoContent.details}
+        onChange={(e: React.FormEvent<HTMLInputElement>) => {
+          const newDetails = (e.target as HTMLInputElement).value;
 
-                  transition: "all 0.3s ease",
-                  "&:hover": {
-                    color: "#70fb70",
-                    backgroundColor: "white",
-                  },
-                }}
-              />
-            </IconButton>
+          setTodoContent({ ...todoContent, details: newDetails });
+        }}
+      />
+    </div>
+  </DialogContent>
+  <DialogActions>
+    <Button
+      onClick={() => setShowUpdateDialog(false)}
+      color="primary"
+    >
+      Cancel
+    </Button>
+    <Button onClick={handleUpdateClick} color="error">
+      Update
+    </Button>
+  </DialogActions>
+</Dialog>
+{/* Update Confirmation Dialog */}
 
-            {/* Update Confirmation Dialog */}
-            <Dialog
-              open={showUpdateDialog}
-              onClose={() => setShowUpdateDialog(false)}
-            >
-              <DialogTitle variant="h3">Uptate The Task</DialogTitle>
-              <DialogContent>
-                <div
-                  id="inputsContainer"
-                  style={{
-                    display: "flex",
-                    flexDirection: "column",
-                  }}
-                >
-                  <input
-                    id="EditTitle"
-                    type="text"
-                    style={{
-                      backgroundColor: "white",
-                      color: "black",
-                      fontSize: "25px",
-                      fontWeight: "bold",
-                      outline: "none",
-                      border: "none",
-                      borderBottom: "2px solid  black",
-                      margin: "15px 15px",
-                    }}
-                    value={todoContent.title}
-                    onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                      const newTitle = (e.target as HTMLInputElement).value;
+{/* =============================================== */}
 
-                      setTodoContent({ ...todoContent, title: newTitle });
-                    }}
-                  />
-
-                  <input
-                    id="EditDetails"
-                    type="text"
-                    style={{
-                      backgroundColor: "white",
-                      color: "black",
-                      fontSize: "25px",
-                      fontWeight: "bold",
-                      outline: "none",
-                      border: "none",
-                      borderBottom: "2px solid  black",
-                      margin: "15px 15px",
-                    }}
-                    value={todoContent.details}
-                    onChange={(e: React.FormEvent<HTMLInputElement>) => {
-                      const newDetails = (e.target as HTMLInputElement).value;
-
-                      setTodoContent({ ...todoContent, details: newDetails });
-                    }}
-                  />
-                </div>
-              </DialogContent>
-              <DialogActions>
-                <Button
-                  onClick={() => setShowUpdateDialog(false)}
-                  color="primary"
-                >
-                  Cancel
-                </Button>
-                <Button onClick={handleUpdateClick} color="error">
-                  Update
-                </Button>
-              </DialogActions>
-            </Dialog>
-            {/* Update Confirmation Dialog */}
-
-            {/* =============================================== */}
-
-            {/* Delete Button */}
-            <IconButton
-              onClick={() => setShowDeleteDialog(true)} // Open the delete dialog
-              aria-label="Delete"
-            >
-              <DeleteIcon
-                sx={{
-                  color: "#d14848",
-                  borderRadius: "50%",
-                  border: "1px solid #d14848",
-                  transition: "all 0.3s ease",
-                  padding: "4px",
-                  "&:hover": {
-                    color: "white",
-                    backgroundColor: "#d14848",
-                  },
-                }}
-              />
-            </IconButton>
-          </Grid>
-        </Grid>
-      </CardContent>
-    </Card>
+{/* Delete Button */}
+<IconButton
+  onClick={() => setShowDeleteDialog(true)} // Open the delete dialog
+  aria-label="Delete"
+>
+  <DeleteIcon
+    sx={{
+      color: "#d14848",
+      borderRadius: "50%",
+      border: "1px solid #d14848",
+      transition: "all 0.3s ease",
+      padding: "1px",
+      "&:hover": {
+        color: "white",
+        backgroundColor: "#d14848",
+      },
+    }}
+  />
+</IconButton>
+</Grid>
+</Grid>
+</CardContent>
+</Card>
 
     {/* Delete Confirmation Dialog */}
     <Dialog open={showDeleteDialog} onClose={() => setShowDeleteDialog(false)}>
