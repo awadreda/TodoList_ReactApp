@@ -1,14 +1,14 @@
-import React, { useState } from "react";
+// import React, { useState } from "react";
 import {
   Card,
   CardContent,
   IconButton,
   Typography,
-  Dialog,
-  DialogActions,
-  DialogContent,
-  DialogTitle,
-  Button,
+  // Dialog,
+  // DialogActions,
+  // DialogContent,
+  // DialogTitle,
+  // Button,
 } from "@mui/material";
 import Grid from "@mui/material/Grid2";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -26,15 +26,6 @@ export default function Todo(todo: TodoPorps) {
 
 
 
-  // State for controlling the delete dialog
-  const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-  const [showUpdateDialog,setShowUpdateDialog] =  useState(false);
-
-  const [todoContent,setTodoContent]=useState({
-    title:todo.title,
-    details:todo.deteles
-
-  })
 
   // Toggle complete status
   function handleCheckedClick(id: string) {
@@ -49,41 +40,10 @@ export default function Todo(todo: TodoPorps) {
 
   }
 
-  function handleUpdateClick()
-  {
-    const newTodo = value.todos.map((t) => {
-
-      if(t.id === todo.id)
-      {
-        return {...t,title:todoContent.title,details:todoContent.details}
-
-      }
-      else
-      {
-        return t;
-      }
-
-
-    })
-
-    value.setTodos(newTodo)
-
-
-   localStorage.setItem("todos" ,JSON.stringify(newTodo))
-
-    setShowUpdateDialog(false);
-
-  }
+  
 
   // Handle Delete Action
-  function handleDeleteClick() {
-    const newTodos = value.todos.filter((t) => t.id !== todo.id);
-    value.setTodos(newTodos);
-    setShowDeleteDialog(false); // Close the dialog after deletion
-       localStorage.setItem("todos", JSON.stringify(newTodos));
-
-  }
-
+  
 
 return (
   <>
@@ -144,7 +104,8 @@ spacing={2}
 {/* Edit Button */}
 <IconButton
   onClick={() => {
-    setShowUpdateDialog(true);
+  todo.handleClickUpdateButton(todo) ;
+ 
   }}
   aria-label="Edit"
 >
@@ -164,82 +125,14 @@ spacing={2}
   />
 </IconButton>
 
-{/* Update Confirmation Dialog */}
-<Dialog
-  open={showUpdateDialog}
-  onClose={() => setShowUpdateDialog(false)}
->
-  <DialogTitle variant="h3">Uptate The Task</DialogTitle>
-  <DialogContent>
-    <div
-      id="inputsContainer"
-      style={{
-        display: "flex",
-        flexDirection: "column",
-      }}
-    >
-      <input
-        id="EditTitle"
-        type="text"
-        style={{
-          backgroundColor: "white",
-          color: "black",
-          fontSize: "25px",
-          fontWeight: "bold",
-          outline: "none",
-          border: "none",
-          borderBottom: "2px solid  black",
-          margin: "15px 15px",
-        }}
-        value={todoContent.title}
-        onChange={(e: React.FormEvent<HTMLInputElement>) => {
-          const newTitle = (e.target as HTMLInputElement).value;
-
-          setTodoContent({ ...todoContent, title: newTitle });
-        }}
-      />
-
-      <input
-        id="EditDetails"
-        type="text"
-        style={{
-          backgroundColor: "white",
-          color: "black",
-          fontSize: "25px",
-          fontWeight: "bold",
-          outline: "none",
-          border: "none",
-          borderBottom: "2px solid  black",
-          margin: "15px 15px",
-        }}
-        value={todoContent.details}
-        onChange={(e: React.FormEvent<HTMLInputElement>) => {
-          const newDetails = (e.target as HTMLInputElement).value;
-
-          setTodoContent({ ...todoContent, details: newDetails });
-        }}
-      />
-    </div>
-  </DialogContent>
-  <DialogActions>
-    <Button
-      onClick={() => setShowUpdateDialog(false)}
-      color="primary"
-    >
-      Cancel
-    </Button>
-    <Button onClick={handleUpdateClick} color="error">
-      Update
-    </Button>
-  </DialogActions>
-</Dialog>
-{/* Update Confirmation Dialog */}
-
 {/* =============================================== */}
 
 {/* Delete Button */}
 <IconButton
-  onClick={() => setShowDeleteDialog(true)} // Open the delete dialog
+  onClick={() => {
+    todo.handleDeleteClick(todo)
+  
+  }} // Open the delete dialog
   aria-label="Delete"
 >
   <DeleteIcon
@@ -262,7 +155,7 @@ spacing={2}
 </Card>
 
     {/* Delete Confirmation Dialog */}
-    <Dialog open={showDeleteDialog} onClose={() => setShowDeleteDialog(false)}>
+    {/* <Dialog open={showDeleteDialog} onClose={() => setShowDeleteDialog(false)}>
       <DialogTitle>Confirm Deletion</DialogTitle>
       <DialogContent>Are you sure you want to delete this task?</DialogContent>
       <DialogActions>
@@ -273,7 +166,7 @@ spacing={2}
           Delete
         </Button>
       </DialogActions>
-    </Dialog>
+    </Dialog> */}
     {/* Delete Confirmation Dialog */}
   </>
 );

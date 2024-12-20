@@ -12,5 +12,6 @@ export type TodoPorps = {
   title: string;
   deteles: string;
   isCompleted: boolean;
-
+  handleDeleteClick:(todo:TodoPorps) => void
+  handleClickUpdateButton:(todo:TodoPorps) => void
 };
