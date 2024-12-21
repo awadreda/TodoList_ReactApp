@@ -18,47 +18,41 @@ import Todo from "./Todo";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { TodosContext } from "../Contexts/TodosContexts";
 import { todoObj, TodoPorps } from "../Types/types";
-
-
-
+import { TosatContext } from "../Contexts/toastContext";
 
 export default function TodoList() {
   const [titleInput, setTitleInput] = useState("");
   const value = useContext(TodosContext);
-  
-  
-  
+
+  const ToastValue = useContext(TosatContext);
+
   const [todosToSHwo, setTodosToShow] = useState("All");
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
-    const [showUpdateDialog,setShowUpdateDialog] =  useState(false);
-    const [targedToDO, setTargetTOdo] = useState<TodoPorps>({
-  
+  const [showUpdateDialog, setShowUpdateDialog] = useState(false);
+  const [targedToDO, setTargetTOdo] = useState<TodoPorps>({
     id: "",
     deteles: "",
     handleDeleteClick: () => {},
-    
-    isCompleted:false,
-    title:"",
-    handleClickUpdateButton:()=> {}
-  });
-  
 
+    isCompleted: false,
+    title: "",
+    handleClickUpdateButton: () => {},
+  });
 
   const [todoContent, setTodoContent] = useState({
-      title: targedToDO.title,
-      details: targedToDO.deteles,
-    });
-
+    title: targedToDO.title,
+    details: targedToDO.deteles,
+  });
 
   function handleDeleteClick() {
     const newTodos = value.todos.filter((t) => t.id !== targedToDO.id);
     value.setTodos(newTodos);
     setShowDeleteDialog(false); // Close the dialog after deletion
     localStorage.setItem("todos", JSON.stringify(newTodos));
+    ToastValue.showHideTost("تم الحذف بنجاح ")
   }
 
-  
-  function handleUpdateClick(todo:TodoPorps) {
+  function handleUpdateClick(todo: TodoPorps) {
     const newTodo = value.todos.map((t) => {
       if (t.id === todo.id) {
         return { ...t, title: todoContent.title, details: todoContent.details };
@@ -67,7 +61,6 @@ export default function TodoList() {
       }
     });
 
-
     value.setTodos(newTodo);
 
     localStorage.setItem("todos", JSON.stringify(newTodo));
@@ -75,20 +68,15 @@ export default function TodoList() {
     setShowUpdateDialog(false);
   }
 
-
-  function handleClickUpdateButton(todo:TodoPorps)
-  {
+  function handleClickUpdateButton(todo: TodoPorps) {
     setTargetTOdo(todo);
+    setTodoContent({ title: todo.title, details: todo.deteles });
     setShowUpdateDialog(true);
-
   }
 
-
-  function handleShowDelteDialogClick(todo:TodoPorps) {
-
-    setTargetTOdo(todo)
-      setShowDeleteDialog(true);
-  
+  function handleShowDelteDialogClick(todo: TodoPorps) {
+    setTargetTOdo(todo);
+    setShowDeleteDialog(true);
   }
 
   function handleChangeTodos(e: React.MouseEvent<HTMLElement, MouseEvent>) {
@@ -169,7 +157,7 @@ export default function TodoList() {
                 borderBottom: "2px solid  black",
                 margin: "15px 15px",
               }}
-              value={targedToDO.title}
+              value={todoContent.title}
               onChange={(e: React.FormEvent<HTMLInputElement>) => {
                 const newTitle = (e.target as HTMLInputElement).value;
 
@@ -190,7 +178,7 @@ export default function TodoList() {
                 borderBottom: "2px solid  black",
                 margin: "15px 15px",
               }}
-              value={targedToDO.deteles}
+              value={todoContent.details}
               onChange={(e: React.FormEvent<HTMLInputElement>) => {
                 const newDetails = (e.target as HTMLInputElement).value;
 
@@ -203,8 +191,13 @@ export default function TodoList() {
           <Button onClick={() => setShowUpdateDialog(false)} color="primary">
             Cancel
           </Button>
-          <Button onClick={() => {
-            handleUpdateClick (targedToDO)}} color="error">
+          <Button
+            onClick={() => {
+              handleUpdateClick(targedToDO);
+              ToastValue.showHideTost("تم التعديل بنجاح ")
+            }}
+            color="success"
+          >
             Update
           </Button>
         </DialogActions>
@@ -235,7 +228,7 @@ export default function TodoList() {
         maxWidth="sm"
         sx={{
           fontFamily: "Alexandria, sans-serif",
-
+          marginTop: "-50px",
           maxWidth: 400,
           boxShadow:
             "0 4px 10px rgba(255, 255, 255, 0.3), 0 4px 20px rgba(0, 0, 0, 0.8)",
@@ -358,6 +351,7 @@ export default function TodoList() {
 
                   value.setTodos(newTodoList);
                   localStorage.setItem("todos", JSON.stringify(newTodoList));
+                  ToastValue.showHideTost("تم إضافة المهمة بنجاح");
                 }}
                 disabled={!(titleInput.length > 0)}
               >
