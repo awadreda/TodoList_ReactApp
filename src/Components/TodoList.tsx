@@ -18,7 +18,7 @@ import Todo from "./Todo";
 import React, { useContext, useEffect, useMemo, useState } from "react";
 import { TodosContext } from "../Contexts/TodosContexts";
 import { todoObj, TodoPorps } from "../Types/types";
-import { TosatContext } from "../Contexts/toastContext";
+import { TosatContext } from "../Contexts/ToastContext";
 
 export default function TodoList() {
   const [titleInput, setTitleInput] = useState("");
@@ -83,6 +83,7 @@ export default function TodoList() {
     const newTOdosToSHow = (e.target as HTMLButtonElement).value;
 
     setTodosToShow(newTOdosToSHow);
+    
   }
 
   const compeletdTodos = useMemo(() => {

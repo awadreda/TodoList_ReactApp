@@ -17,13 +17,14 @@ import EditIcon from "@mui/icons-material/Edit";
 import { TodoPorps } from "../Types/types";
 import { useContext } from "react";
 import { TodosContext } from "../Contexts/TodosContexts";
+import {  useToast } from "../Contexts/ToastContext";
 
 
 
 
 export default function Todo(todo: TodoPorps) {
   const value = useContext(TodosContext);
-
+  const ToastValue = useToast()
 
 
 
@@ -36,7 +37,10 @@ export default function Todo(todo: TodoPorps) {
       return t;
     });
     value.setTodos(newTodo);
-       localStorage.setItem("todos", JSON.stringify(newTodo));
+    
+    localStorage.setItem("todos", JSON.stringify(newTodo));
+
+    ToastValue.showHideTost("تم التعديل بنجاح ");
 
   }
 

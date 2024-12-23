@@ -12,8 +12,8 @@ import { createTheme, ThemeProvider} from "@mui/material";
 
 import { TodosContext } from './Contexts/TodosContexts';
 import { todoObj } from './Types/types';
-import MySnackBar from "./Components/MySnackBar";
-import { TosatContext } from './Contexts/toastContext';
+// import MySnackBar from "./Components/MySnackBar";
+import { ToastProvider } from './Contexts/ToastContext';
 // import { DeleteContext } from './Contexts/DeleteContext';
 // import { FastForward } from '@mui/icons-material';
 // import { Typography } from "@mui/material";
@@ -61,36 +61,26 @@ const todosValueList: todoObj[] = [
 
 function App() {
 
-  const [open, setOpen] = useState(false);
-  const [message,setMessage] = useState("");
   
 
     const [todos,setTodos]=useState(todosValueList)
 
-    function showHideTost(message:string) {
-
-      setOpen(true);
-
-      setTimeout(() => {
-          setOpen(false)
-      }, 2000);
-
-      setMessage(message)  
-    }
 
   
   return (
     <>
       <ThemeProvider theme={theme}>
-       <MySnackBar open={open} message={message}/>
+            <ToastProvider>
         <div style={{ width: "100vw" }}>
           <TodosContext.Provider value={{ todos, setTodos }}>
-            <TosatContext.Provider value={{showHideTost}} >
+          
 
             <TodoList />
-            </TosatContext.Provider>
+          
+          
           </TodosContext.Provider>
         </div>
+            </ToastProvider>
       </ThemeProvider>
     </>
   );
