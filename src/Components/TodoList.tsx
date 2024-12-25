@@ -13,16 +13,32 @@ import {
 } from "@mui/material";
 import "../App.css";
 import Grid from "@mui/material/Grid2";
-import { v4 as uuidv4 } from "uuid";
+// import { v4 as uuidv4 } from "uuid";
 import Todo from "./Todo";
-import React, { useContext, useEffect, useMemo, useState } from "react";
-import { TodosContext } from "../Contexts/TodosContexts";
-import { todoObj, TodoPorps } from "../Types/types";
+import React, {
+  useContext,
+  useEffect,
+  useMemo,
+  // useReducer,
+  useState,
+} from "react";
+// import { TodosContext } from "../Contexts/TodosContexts";
+import { EMethodReducer, todoObj, TodoPorps } from "../Types/types";
 import { TosatContext } from "../Contexts/ToastContext";
+// import reducerTodos from "../Reducers/todosReducers";
+import {  useTodos } from "../Contexts/TodosContexts";
 
 export default function TodoList() {
   const [titleInput, setTitleInput] = useState("");
-  const value = useContext(TodosContext);
+  // const value = useContext(TodosContext);
+  // const { todos2, setTodos } = useContext(TodosContext);
+
+  // const initTodo: todoObj[] = [
+  //   { id: "", details: "", isCompleted: false, title: "" },
+  // ];
+  // const [todos, dispatch] = useReducer(reducerTodos, initTodo as todoObj[]);
+
+  const { todos, dispatch } = useTodos();
 
   const ToastValue = useContext(TosatContext);
 
@@ -31,7 +47,7 @@ export default function TodoList() {
   const [showUpdateDialog, setShowUpdateDialog] = useState(false);
   const [targedToDO, setTargetTOdo] = useState<TodoPorps>({
     id: "",
-    deteles: "",
+    details: "",
     handleDeleteClick: () => {},
 
     isCompleted: false,
@@ -41,36 +57,45 @@ export default function TodoList() {
 
   const [todoContent, setTodoContent] = useState({
     title: targedToDO.title,
-    details: targedToDO.deteles,
+    details: targedToDO.details,
   });
 
+  function handleAddTaskClick() {
+    dispatch({
+      type: EMethodReducer.Add,
+      payload: {
+        todo: { id: "", details: "", isCompleted: false, title: titleInput },
+      },
+    });
+
+    setTitleInput("");
+    ToastValue.showHideTost("تم إضافة المهمة بنجاح");
+  }
+
   function handleDeleteClick() {
-    const newTodos = value.todos.filter((t) => t.id !== targedToDO.id);
-    value.setTodos(newTodos);
-    setShowDeleteDialog(false); // Close the dialog after deletion
-    localStorage.setItem("todos", JSON.stringify(newTodos));
-    ToastValue.showHideTost("تم الحذف بنجاح ")
+    dispatch({ type: EMethodReducer.Delete, payload: { todo: targedToDO } });
+
+    ToastValue.showHideTost("تم الحذف بنجاح ");
+    setShowDeleteDialog(false);
   }
 
   function handleUpdateClick(todo: TodoPorps) {
-    const newTodo = value.todos.map((t) => {
-      if (t.id === todo.id) {
-        return { ...t, title: todoContent.title, details: todoContent.details };
-      } else {
-        return t;
-      }
+    dispatch({
+      type: EMethodReducer.Update,
+      payload: {
+        todo: {
+          ...todo,
+          title: todoContent.title,
+          details: todoContent.details,
+        },
+      },
     });
-
-    value.setTodos(newTodo);
-
-    localStorage.setItem("todos", JSON.stringify(newTodo));
-
     setShowUpdateDialog(false);
   }
 
   function handleClickUpdateButton(todo: TodoPorps) {
     setTargetTOdo(todo);
-    setTodoContent({ title: todo.title, details: todo.deteles });
+    setTodoContent({ title: todo.title, details: todo.details });
     setShowUpdateDialog(true);
   }
 
@@ -83,22 +108,21 @@ export default function TodoList() {
     const newTOdosToSHow = (e.target as HTMLButtonElement).value;
 
     setTodosToShow(newTOdosToSHow);
-    
   }
 
   const compeletdTodos = useMemo(() => {
-    return value.todos.filter((t) => {
+    return todos.filter((t:todoObj) => {
       return t.isCompleted;
     });
-  }, [value.todos]);
+  }, [todos]);
 
   const nonCompeletdTodos = useMemo(() => {
-    return value.todos.filter((t) => {
+    return todos.filter((t: todoObj) => {
       return !t.isCompleted;
     });
-  }, [value.todos]);
+  }, [todos]);
 
-  let tsxTodo = value.todos;
+  let tsxTodo = todos;
 
   if (todosToSHwo === "Completed") {
     tsxTodo = compeletdTodos;
@@ -107,21 +131,22 @@ export default function TodoList() {
   }
 
   useEffect(() => {
-    const storgeTodos = JSON.parse(
-      localStorage.getItem("todos") || JSON.stringify(value.todos)
-    );
-    value.setTodos(storgeTodos);
+    dispatch({
+      type: EMethodReducer.Get,
+      payload: { todo: { id: "", details: "", isCompleted: false, title: "" } },
+    });
 
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+     
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const todosTSX = tsxTodo.map((t) => {
+  const todosTSX = tsxTodo.map((t: todoObj) => {
     return (
       <Todo
         key={t.id}
         isCompleted={t.isCompleted}
         title={t.title}
-        deteles={t.details}
+        details={t.details}
         id={t.id}
         handleDeleteClick={handleShowDelteDialogClick}
         handleClickUpdateButton={handleClickUpdateButton}
@@ -195,7 +220,7 @@ export default function TodoList() {
           <Button
             onClick={() => {
               handleUpdateClick(targedToDO);
-              ToastValue.showHideTost("تم التعديل بنجاح ")
+              ToastValue.showHideTost("تم التعديل بنجاح ");
             }}
             color="success"
           >
@@ -341,19 +366,7 @@ export default function TodoList() {
                   fontSize: "15px",
                 }}
                 size="large"
-                onClick={() => {
-                  const newTodos: todoObj = {
-                    id: uuidv4(),
-                    title: titleInput,
-                    details: "",
-                    isCompleted: false,
-                  };
-                  const newTodoList = [...value.todos, newTodos];
-
-                  value.setTodos(newTodoList);
-                  localStorage.setItem("todos", JSON.stringify(newTodoList));
-                  ToastValue.showHideTost("تم إضافة المهمة بنجاح");
-                }}
+                onClick={handleAddTaskClick}
                 disabled={!(titleInput.length > 0)}
               >
                 Add Task
