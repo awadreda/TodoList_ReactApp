@@ -7,7 +7,7 @@ The app allows users to **add**, **edit**, **delete**, and **mark tasks as compl
 
 ## 🔗 Live Demo
 
-🚀 [View Live Demo]([https://your-demo-link-here.vercel.app](https://todolist-react-app22.netlify.app/))  
+🚀 [View Live Demo](https://your-demo-link-here.vercel.app](https://todolist-react-app22.netlify.app/))  
 *(Replace this link with your deployed app once it's live, e.g., Vercel or Netlify.)*
 
 ---
